@@ -2625,7 +2625,11 @@ int emit_array_call(Compiler *c, int id, Buf *b) {
         if (fa == 1 && argc == 3 &&
             (ft == TY_RANGE || ft == TY_FLOAT_RANGE || ft == TY_STR_RANGE)) {
           buf_printf(b, "({ (void)("); emit_expr(c, recv, b); buf_puts(b, "); (void)(");
+          emit_expr(c, argv[0], b);
+          buf_puts(b, "); (void)(");
           emit_expr(c, argv[fa], b);
+          buf_puts(b, "); (void)(");
+          emit_expr(c, argv[2], b);
           buf_puts(b, "); sp_raise_cls(\"TypeError\", \"no implicit conversion of Range into Integer\"); ");
           buf_printf(b, "(sp_%sArray *)0; })", (rt == TY_POLY_ARRAY) ? "Poly" : k);
           return 1;

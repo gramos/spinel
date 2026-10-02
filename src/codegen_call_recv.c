@@ -2622,7 +2622,8 @@ int emit_array_call(Compiler *c, int id, Buf *b) {
          fill quietly did nothing (#3611). */
       for (int fa = 1; fa < argc; fa++) {
         TyKind ft = comp_ntype(c, argv[fa]);
-        if (fa == 1 && argc == 3 && ft == TY_RANGE) {
+        if (fa == 1 && argc == 3 &&
+            (ft == TY_RANGE || ft == TY_FLOAT_RANGE || ft == TY_STR_RANGE)) {
           buf_printf(b, "({ (void)("); emit_expr(c, recv, b); buf_puts(b, "); (void)(");
           emit_expr(c, argv[fa], b);
           buf_puts(b, "); sp_raise_cls(\"TypeError\", \"no implicit conversion of Range into Integer\"); ");
